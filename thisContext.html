@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <script>
+            window.onload = function() {
+                let button = document.querySelector('button')
+                function fn1() {
+                    console.log(this)
+                }
+                let fn2 = () => console.log(this)
+
+                button.addEventListener('click', fn1)
+                button.addEventListener('click', fn2)
+            }
+        </script>
+
+    </head>
+<body>
+<button> 눌러 </button>
+
+<p>
+    fn1의 this context는 버튼이 클릭될 때 결정된다. <br/>
+    fn2의 this context는 코드를 읽을 때 결정된다.<br/>
+    <br/>
+    window.onload = function() { <br/>
+        let button = document.querySelector('button')<br/>
+        function fn1() {<br/>
+            console.log(this)<br/>
+        }<br/>
+        let fn2 = () => console.log(this)<br/>
+        <br/>
+        button.addEventListener('click', fn1)<br/>
+        button.addEventListener('click', fn2)<br/>
+    }<br/>
+</p>
+
+
+    
+</body>
+</html>
