@@ -160,6 +160,7 @@ let user = {
 ```
 
 ## 생성자 함수
+생성자 함수는 `new` 키워드로 생성한다.
 ### 기본사용
 ```js
 function User(name, age) {
@@ -178,10 +179,213 @@ function User(name, age) {
   this.name = name
   this.age = age
   this.sayName = function() {
-    console.log(this.name)
+    console.log(`저의 이름은 ${this.name} 입니다.`)
   }
 }
 let user1 = new User('Hi', 30)
 user1.sayName()
 
 ```
+
+# Object
+
+## Computed property
+
+```js
+let a = 'a'
+
+const user = {
+  name : 'Hi',
+  [a + 'ge'] : 30, // computed property [ ] 기호 안에 연산할 내용을 적는다.
+  [1 + 2 ] : 3
+}
+```
+## Object 객체
+### 키/값 <--> 배열 변환
+```js
+let a = 'a'
+let nameString = 'name'
+
+const user = {
+  [nameString] : 'Hi', // computed property
+  [a + 'ge'] : 30,  
+  [1 + 2 ] : 3
+}
+// Key/Value를 Array로 변환
+userArr = Object.entries(user)
+console.log(userArr)
+
+// Array를 Key/Value로 변환
+userKeyValue = Object.fromEntries(userArr)
+console.log(userKeyValue)
+
+```
+
+```
+▼(3) [Array(2), Array(2), Array(2)]
+ ▶0: (2) ['3', 3]
+ ▶1: (2) ['name', 'Hi']
+ ▶2: (2) ['age', 30]
+   length: 3
+ ▶[[Prototype]]: Array(0)
+
+▼{3: 3, name: 'Hi', age: 30}
+   3: 3
+   age: 30
+   name: "Hi"
+ ▶[[Prototype]]: Object
+```
+### Object.assign() 복사
+
+```js
+const user = {
+  name: "hi",
+  age : 20
+}
+
+const copyUser = Object.assign({}, user)
+copyUser.name = "bye"
+console.log(user)
+console.log(copyUser)
+```
+
+```
+{name: 'hi', age: 20}
+{name: 'bye', age: 20}
+```
+
+### Object.keys() 키 추출, Object.values() 값 추출
+
+```js
+const user = {
+  name: "hi",
+  age : 20
+}
+
+const keys = Object.keys(user)
+const values = Object.values(user)
+console.log(keys)
+console.log(values)
+```
+
+```
+['name', 'age']
+['hi', 20]
+```
+
+# Array
+## 기초
+- push()
+- pop()
+- unshift() 앞에 삽입
+- shift()  뒤에 삭제
+## 심화구문
+### Array.splice()
+지정된 요소를 지우고, 필요에 따라 요소를 추가 한다. 지워진 요소는 리턴값으로 반환한다.
+- arr.splice(시작, 개수) : 특정요소 지움
+- arr.splice(시작, 개수, `추가요소`) : 지우고 `추가요소` 추가
+
+
+
+```js
+let arr = [1, 2, 3, 4, 5]
+let result = arr.splice(1, 2) // [2, 3] 지움
+console.log(arr) // [1, 4, 5]
+console.log(result) // [2, 3]
+```
+```js
+let arr = [1, 2, 3, 4, 5]
+let result = arr.splice(1, 3, 100, 200) // [2, 3, 4] 지움, [100, 200] 추가
+console.log(arr) // [1, 100, 200, 5]
+console.log(result) // [2, 3, 4]
+```
+```js
+let arr = [1, 2, 3, 4, 5]
+let result = arr.splice(1, 0, 100, 200) // 지울게 없네, [100, 200] 추가
+console.log(arr) // [1, 100, 200, 2, 3, 4, 5]
+console.log(result) // [2, 3, 4]
+```
+### Array.slice()
+- arr.slice(n, m) : n번째 부터 m번째 까지 반환 (m을 안쓰면 마지막까지, 전부 안쓰면 전체 복사)
+
+```js
+let arr = [1, 2, 3, 4, 5]
+console.log(arr.slice()) // [1, 2, 3, 4, 5]
+console.log(arr.slice(1)) // [2, 3, 4, 5]
+console.log(arr.slice(1, 4)) // [2, 3, 4]
+```
+### Array.concat()
+- arr1.concat(arr2, arr3, ...) : 배열들을 합쳐서 하나의 새 배열로 생성
+
+```js
+let arr1 = [1, 2]
+let arr2 = [3, 4]
+const newArray = arr1.concat(arr2, [5, 6], 7, 8)
+console.log(newArray) // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+### Array.forEach(fn) : 배열 반복
+
+```js
+let array = "my name is hi".split(" ")
+
+array.forEach((item, index, arr) => {
+  // arr은 해당 배열 자체이고 보통 생략한다.
+  console.log(`${index} : ${item}`)
+})
+```
+
+### Array.indexOf() / Array.lastindexOf()
+
+```js
+let arr = [1, 2, 3, 4, 5, 1, 2, 3]
+
+arr.indexOf(3) // 2 
+arr.indexOf(3, 3) // 7, 인덱스 3 이후의 3을 찾아 인덱스를 알려준다.
+arr.lastIndexOf(3) // 7, 뒤에서 3을 찾아서 인덱스를 리턴한다.
+```
+
+
+### Array.includes()  : 포함 확인
+배열내 있으면 true 리턴, 없으면 false
+```js
+let arr = [1, 2, 3]
+
+console.log(arr.includes(2)) // true
+console.log(arr.includes(8)) // false
+```
+
+### Array.find(fn)/ Array.findIndex(fn) 
+첫번째 true 값/인덱스만 반환하고 끝, 찾지 못하면 undefined를 반환, fn은 찾는 함수이다.
+배열내 있으면 true 리턴, 없으면 false
+```js
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+const result = arr.find((item) => item%2 === 0)
+// same
+const result1 = arr.find((item) => {return item%2 ===0})
+// same
+const result2 = arr.find(function(item) {
+  return item % 2 === 0
+})
+console.log(result) // 2
+```
+
+
+### Array.filter(fn)
+find()와 기능이 유사하지만 find()는 하나만 찾는데 반해 filter()는 조건을 만족하는 모든 값을 배열로 만들어 리턴한다.
+```js
+let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+const result = arr.filter((item) => item%2 === 0)
+
+console.log(result) // 2
+```
+
+### Array.reverse() : 역순으로 정렬 (실제 값의 위치가 바뀐다)
+
+### Array.map(fn)
+함수를 받아 특정 기능을 수행 후 새로운 배열을 반환
+
+
+// https://www.youtube.com/watch?v=4_WLS9Lj6n4&t=5845s
