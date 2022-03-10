@@ -77,15 +77,25 @@ showNumber()
 위 두개의 실행결과는 어떻게 나올까??
 
 .
+
 .
+
 .
+
 .
+
 .
+
 .
+
 .
+
 .
+
 .
+
 .
+
 ```
 undefined
 14
@@ -149,16 +159,69 @@ console.log(name)
 ## 정리
 버그와 부작용을 줄이기 위해 `var` 보다는 `let`과 `const`를 사용하자.
 
-# 객체 리터럴
-
-## 기본사용
+---
+# 함수
 ```js
-let user = {
-  name : 'hi',
-  age : 20
+function add(a, b) {
+    return a + b
 }
+console.log(add(3, 5))
+
+const sub = function(a, b) {
+    return a - b;
+}
+console.log(sub(3, 5))
+
+const mul = (a, b) => {
+    return a * b
+} 
+console.log(mul(3, 5))
+
+const sq = a => a * a
+console.log(sq(3))
 ```
 
+---
+# object
+
+## 객체 리터럴
+```js
+let name = "yesman"
+let age = 30
+
+let obj = {
+    "name": name,
+    age, // age: age에서 생략함
+    "yesman":"yes",
+    answer: function() {
+        console.log('yes!!');
+    },
+    doSomething() {
+        console.log('oh~ yes!! ')
+    },
+    "isOk": ()=>console.log('yeah~~s!! '),
+
+}
+console.log('name : ', obj.name)
+console.log('name : ', obj["name"])
+console.log('obj[name] : ', obj[name])
+console.log('age :' + obj["age"])
+console.log('age :' + obj[age])
+obj.answer()
+obj["answer"]()
+obj[answer]() 
+```
+실행결과
+```
+name :  yesman
+name :  yesman
+obj[name] :  yes
+age :30
+age :undefined
+yes!!
+yes!!
+Uncaught ReferenceError: answer is not defined 
+```
 ## 생성자 함수
 생성자 함수는 `new` 키워드로 생성한다.
 ### 기본사용
@@ -184,10 +247,8 @@ function User(name, age) {
 }
 let user1 = new User('Hi', 30)
 user1.sayName()
-
 ```
 
-# Object
 
 ## Computed property
 
@@ -387,5 +448,141 @@ console.log(result) // 2
 ### Array.map(fn)
 함수를 받아 특정 기능을 수행 후 새로운 배열을 반환
 
+```js
+let arr = [1, 2, 3, 4, 5]
 
+const result = arr.map((item) => item%2 === 0)
+console.log(result) // [false, true, false, true, false]
+const result2 = arr.map((item) => item*item)
+console.log(result2) // [1, 4, 9, 16, 25]
+```
+
+### Array.join()
+문자열을 합쳐준다. join()함수 안에 넣은 문자열로 합쳐주며, 아무것도 넣지 않으면 콤마로 각 문자열을 합쳐준다.
+```js
+let arr = ["안", "녕", "하", "세", "요"]
+console.log(arr.join()) // 안,녕,하,세,요
+console.log(arr.join("|")) // 안,녕,하,세,요
+console.log(arr.join("")) // 안녕하세요
+```
+
+### Array.isArray()
+객체가 배열인지 판별한다.
+```js
+let user = {
+  name: "hi",
+  age: 20
+}
+
+let arr = ["hi", 20]
+
+console.log(typeof user) // object
+console.log(typeof arr)  // object
+console.log(Array.isArray(user))  // false
+console.log(Array.isArray(arr))   // true
+```
+
+### Array.sort(fn) / Array.reduce()
+```js
+let arr = [12, 5, 2, 4, 3]
+arr.sort();
+console.log(arr) // [12, 2, 3, 4, 5] ??? 문자열로 인식하고 정렬한다.
+```
+sort()함수는 인자로 값 비교 함수를 넣지 않으면 값을 문자열로 인식하고 정렬한다. 숫자를 정렬하기 위해서는 비교 함수를 넣어주자.
+
+```js
+let arr = [12, 5, 2, 4, 3]
+let sortFunc = (a, b) => a - b // 음수, 0, 양수로 구분된다.
+/*
+let sortFunc = function (a, b) {
+  return a - b 
+}
+*/
+arr.sort(sortFunc);
+console.log(arr) // [2, 3, 4, 5, 12]
+```
+
+### Array.reduce()
+reduce() 메서드는 배열의 각 요소에 대해 주어진 리듀서(reducer)함수를 실행하고, 하나의 결과값을 반환한다.
+
+```js
+let arr = [1, 2, 3, 4, 5]
+
+// prev : 이전까지의 처리 결과 (여기서는 이전까지의 누적합)
+// cur : 현재값
+// 마지막 인자 0 : 초기값
+const result = arr.reduce((prev, cur) => { 
+  return prev + cur
+}, 0)
+console.log(result) // 15
+```
+
+```js
+function balancedParens(string) {
+    // [].reduce
+    // (method) Array<undefined>.reduce(callbackfn: (previousValue: undefined, currentValue: undefined, currentIndex: number, array: undefined[]) => undefined): undefined (+2 overloads)
+    return !string.split("").reduce(function(acc, char) {
+        if(char === "(") { return ++ acc}
+        if(char === ")") { return -- acc}
+        return acc;
+        
+    }, 0)
+}
+
+console.log(balancedParens("()))")) // false
+console.log(balancedParens("((ddafd(dddd)44ddfgas))")) // true
+
+const numbers = [1, 1, 1, 2, 3, 4, 5, 12, 3 ,3 , 3, 4, 5, 2]
+let mapReduce = numbers.reduce((map, number) => {
+   if(map[number] === undefined) map[number] = 0
+   map[number] ++
+   return map
+}, {})
+
+console.log(mapReduce) // {1: 3, 2: 2, 3: 4, 4: 2, 5: 2, 12: 1}
+```
+
+# 구조분해 할당
+
+## 배열 구조 분해
+```js
+let str = "my name is hi"
+// 변수 개수가 남는 경우
+let [word1, ,word2] = str.split(' ')
+console.log(`${word1}, ${word2}`) // my, is
+
+// 변수 개수가 모자라는 경우
+let [a, b, c] = [1, 2] // c는 undefined로 초기화 된다.
+console.log(`${a}, ${b}, ${c}`) // 1, 2, undefined
+
+// 초기값 지정
+let [d=1, e=2, f=3] = [4, 5]
+console.log(`${d}, ${e}, ${f}`) // 4, 5, 3
+```
+
+## 객체 구조 분해
+
+```js
+{
+let user = {name: 'hi', age:20}
+let {name:myName, age, gender = 'male'} = user
+console.log(`${myName}, ${age}, ${gender}`) // hi, 20, male
+}
+```
+
+
+
+
+
+
+
+
+
+> Lodash
 // https://www.youtube.com/watch?v=4_WLS9Lj6n4&t=5845s
+
+
+
+
+  git config --global user.email "yoo7032@gmail.com"
+  git config --global user.name "yoo7032"

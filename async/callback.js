@@ -45,7 +45,7 @@ const id = 't0132'; //
 const password = 'pass'; // prompt('enter your password')
 userStorage.loginUser(id, password, (user)=>{
     // 성공했다면 role을 받아 온다.
-    userStorage.getRoles(user, (userWithRole) = {
+        userStorage.getRoles(user, (userWithRole) = {
 
     }, error => {
 
