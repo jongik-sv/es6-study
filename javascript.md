@@ -234,6 +234,10 @@ function User(name, age) {
 let user1 = new User('Hi', 30)
 let user2 = new User('안녕', 30)
 let user3 = new User('방가', 30)
+
+console.log(user1)
+console.log(user2)
+console.log(user3)
 ```
 
 ### 맴버 추가
@@ -364,7 +368,7 @@ console.log(result) // [2, 3, 4]
 let arr = [1, 2, 3, 4, 5]
 let result = arr.splice(1, 0, 100, 200) // 지울게 없네, [100, 200] 추가
 console.log(arr) // [1, 100, 200, 2, 3, 4, 5]
-console.log(result) // [2, 3, 4]
+console.log(result) // []
 ```
 ### Array.slice()
 - arr.slice(n, m) : n번째 부터 m번째 까지 반환 (m을 안쓰면 마지막까지, 전부 안쓰면 전체 복사)
